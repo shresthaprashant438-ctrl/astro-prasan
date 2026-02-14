@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Prashant Shrestha - Astronaut & Astrophysicist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0a0e17; color: #f0f6fc; line-height: 1.6; overflow-x: hidden; }
+        .space-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .star { position: absolute; background-color: white; border-radius: 50%; animation: twinkle 5s infinite; }
+        .galaxy { position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; background: radial-gradient(circle at center, rgba(79, 172, 254, 0.1) 0%, rgba(0, 0, 0, 0) 70%); transform: translate(-50%, -50%); animation: rotate 120s linear infinite; }
+        .planet { position: absolute; border-radius: 50%; box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+        .planet1 { width: 80px; height: 80px; top: 20%; left: 10%; background: linear-gradient(30deg, #ff7e5f, #feb47b); animation: float 15s ease-in-out infinite; }
+        .planet2 { width: 120px; height: 120px; top: 65%; left: 85%; background: linear-gradient(30deg, #00cdac, #02aab0); animation: float 18s ease-in-out infinite reverse; }
+        .asteroid { position: absolute; width: 20px; height: 20px; background: linear-gradient(45deg, #8e8e8e, #c2c2c2); border-radius: 50%; animation: moveAsteroid 25s linear infinite; }
+        .rocket { position: absolute; font-size: 30px; animation: flyRocket 40s linear infinite; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+        header { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
+        .hero-content { background: rgba(10, 14, 23, 0.7); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; box-shadow: 0 0 50px rgba(79, 172, 254, 0.3); animation: fadeIn 2s ease-out; }
+        .profile-image { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 5px solid rgba(255, 255, 255, 0.2); box-shadow: 0 0 30px #3a7bd5; margin-bottom: 20px; }
+        h1 { font-size: 3.5rem; margin-bottom: 10px; background: linear-gradient(to right, #4facfe, #00f2fe); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 20px rgba(79, 172, 254, 0.7); animation: glow 2s ease-in-out infinite alternate; }
+        .title { font-size: 1.8rem; color: #aaccff; margin-bottom: 30px; animation: glow 2s ease-in-out infinite alternate; }
+        section { padding: 100px 0; background: rgba(10, 14, 23, 0.8); backdrop-filter: blur(10px); margin: 40px 0; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        h2 { font-size: 2.5rem; margin-bottom: 40px; text-align: center; color: #4facfe; position: relative; }
+        h2:after { content: ''; display: block; width: 100px; height: 4px; background: linear-gradient(to right, #4facfe, #00f2fe); margin: 15px auto; border-radius: 2px; }
+        .about-content { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: center; }
+        .about-text { flex: 1; min-width: 300px; font-size: 1.1rem; }
+        .about-image { flex: 1; min-width: 300px; height: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transition: transform 0.5s, box-shadow 0.5s; }
+        .about-image:hover { transform: translateY(-10px); box-shadow: 0 20px 45px rgba(79, 172, 254, 0.4); }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .about-image:hover img { transform: scale(1.05); }
+        .mission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .mission-card { background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 30px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); transition: transform 0.3s, box-shadow 0.3s; }
+        .mission-card:hover { transform: translateY(-15px); box-shadow: 0 15px 35px rgba(79, 172, 254, 0.3); background: rgba(255, 255, 255, 0.08); }
+        .mission-card h3 { color: #00f2fe; margin-bottom: 20px; font-size: 1.6rem; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
+        .gallery-item { height: 280px; border-radius: 15px; overflow: hidden; position: relative; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); transition: transform 0.3s; }
+        .gallery-item:hover { transform: translateY(-10px) scale(1.02); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent); opacity: 0; transition: opacity 0.3s; }
+        .gallery-item:hover::after { opacity: 1; }
+        footer { background: rgba(5, 8, 15, 0.9); padding: 60px 0 30px; text-align: center; backdrop-filter: blur(10px); border-radius: 20px 20px 0 0; }
+        .social-links { display: flex; justify-content: center; gap: 25px; margin: 30px 0; }
+        .social-link { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, #4facfe, #00f2fe); color: white; text-decoration: none; font-size: 1.8rem; transition: transform 0.3s, box-shadow 0.3s; }
+        .social-link:hover { transform: translateY(-8px) scale(1.1); box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4); }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        @keyframes rotate { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        @keyframes moveAsteroid { 0% { transform: translate(0, 0); } 100% { transform: translate(calc(-100vw - 100px), calc(100vh + 100px)); } }
+        @keyframes flyRocket { 0% { transform: translate(100vw, 100vh) rotate(45deg); } 100% { transform: translate(-100px, -100px) rotate(45deg); } }
+        @keyframes glow { 0% { text-shadow: 0 0 10px rgba(79, 172, 254, 0.7); } 100% { text-shadow: 0 0 30px rgba(79, 172, 254, 0.9), 0 0 40px rgba(79, 172, 254, 0.6); } }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .title { font-size: 1.3rem; }
+            .about-content, .mission-grid, .gallery { flex-direction: column; }
+            section { padding: 60px 0; }
+            .hero-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-background">
+        <div class="stars" id="stars"></div>
+        <div class="galaxy"></div>
+        <div class="planet planet1"></div>
+        <div class="planet planet2"></div>
+        <div class="asteroid" style="top: 30%; left: 20%; animation-delay: -5s;"></div>
+        <div class="asteroid" style="top: 60%; left: 70%; animation-delay: -12s;"></div>
+        <div class="asteroid" style="top: 40%; left: 50%; animation-delay: -18s;"></div>
+        <div class="rocket" style="top: 40%; left: 80%; animation-delay: -10s;">🚀</div>
+        <div class="rocket" style="top: 70%; left: 30%; animation-delay: -25s;">🚀</div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="hero-content">
+                <img src="profile.jpg" alt="Dr. Prashant Shrestha" class="profile-image">
+                <h1>Dr. Prashant Shrestha</h1>
+                <div class="title">First Nepalese Astronaut | First Person on Mars | Astrophysicist</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="about">
+            <h2>About Dr. Shrestha</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="astronaut.jpg" alt="Astronaut Dr. Shrestha">
+                </div>
+                <div class="about-text">
+                    <p>Dr. Prashant Shrestha is the first astronaut from Nepal and the first person to land on Mars. With a PhD in Astrophysics, he has revolutionized space exploration and research on interplanetary travel.</p>
+                    <br>
+                    <p>He has completed multiple missions including spacewalks and lunar exploration, contributing to human knowledge of extraterrestrial environments and space technology.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="missions">
+            <h2>Space Missions</h2>
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <h3>Mars Expedition I (2026)</h3>
+                    <p>First human mission to Mars. Conducted experiments on Martian soil, atmosphere, and potential habitability for future colonies.</p>
+                </div>
+                <div class="mission-card">
+                    <h3>Moonwalk Mission (2024)</h3>
+                    <p>Participated in the first Nepalese moonwalk. Conducted lunar geological studies and tested equipment for extended lunar habitation.</p>
+                </div>
+                <div class="mission-card">
+                    <h3>ISS Spacewalk (2023)</h3>
+                    <p>Performed multiple spacewalks for the International Space Station, maintaining modules and conducting scientific experiments in microgravity.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>Gallery</h2>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="gallery1.jpg" alt="Spacewalk">
+                </div>
+                <div class="gallery-item">
+                    <img src="gallery2.jpg" alt="Astronaut on Moon">
+                </div>
+                <div class="gallery-item">
+                    <img src="gallery3.jpg" alt="Mars Rover">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <h2>Connect with Dr. Shrestha</h2>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>&copy; 2025 Dr. Prashant Shrestha | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        const starsContainer = document.getElementById("stars");
+        const numStars = 200;
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement("div");
+            star.className = "star";
+            star.style.width = Math.random() * 3 + "px";
+            star.style.height = star.style.width;
+            star.style.top = Math.random() * 100 + "%";
+            star.style.left = Math.random() * 100 + "%";
+            star.style.animationDuration = (Math.random() * 5 + 5) + "s";
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>
